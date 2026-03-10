@@ -1,1078 +1,974 @@
-/* ═══════════════════════════════════════════════════════
-   MYSTIC TAROT — style.css
-   Theme: Deep-space mysticism, gold & violet, glassmorphism
-   ═══════════════════════════════════════════════════════ */
-
-/* ─── CSS Variables ──────────────────────────────────── */
-:root {
-  --color-bg:          #090714;
-  --color-deep:        #0d0a1a;
-  --color-surface:     rgba(20, 14, 40, 0.75);
-  --color-glass:       rgba(255, 255, 255, 0.04);
-  --color-glass-hover: rgba(255, 255, 255, 0.08);
-  --color-border:      rgba(200, 150, 60, 0.25);
-  --color-border-glow: rgba(200, 150, 60, 0.6);
-
-  --gold-100: #fef3c7;
-  --gold-200: #f7d97a;
-  --gold-300: #c9962b;
-  --gold-400: #92640a;
-
-  --violet-100: #ede9fe;
-  --violet-200: #a78bfa;
-  --violet-300: #7c3aed;
-  --violet-400: #4c1d95;
-
-  --crimson:   #be185d;
-  --teal:      #0d9488;
-
-  --font-display: 'Cinzel Decorative', serif;
-  --font-heading: 'Cinzel', serif;
-  --font-body:    'EB Garamond', serif;
-
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 36px;
-
-  --shadow-gold: 0 0 20px rgba(200, 150, 60, 0.3), 0 0 60px rgba(200, 150, 60, 0.1);
-  --shadow-violet: 0 0 20px rgba(124, 58, 237, 0.4), 0 0 60px rgba(124, 58, 237, 0.15);
-
-  --transition-base: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-spring: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* ─── Reset & Base ───────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-size: 16px;
-  -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
-}
-
-body {
-  background: var(--color-bg);
-  color: var(--gold-100);
-  font-family: var(--font-body);
-  min-height: 100dvh;
-  overflow-x: hidden;
-  position: relative;
-  /* Subtle noise texture */
-  background-image:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,0.15) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 20% 100%, rgba(190,24,93,0.08) 0%, transparent 50%);
-}
-
-/* ─── Starfield Canvas ───────────────────────────────── */
-#starfield {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ─── Screen System ──────────────────────────────────── */
-.screen {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  overflow-y: auto;
-  overflow-x: hidden;
-  /* Hidden by default */
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(20px);
-  transition: opacity var(--transition-slow), transform var(--transition-slow);
-}
-
-.screen.active {
-  opacity: 1;
-  pointer-events: all;
-  transform: translateY(0);
-}
-
-.screen.exit {
-  opacity: 0;
-  transform: translateY(-20px);
-  pointer-events: none;
-}
-
-.screen-inner {
-  min-height: 100dvh;
-  padding: 20px 20px 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-
-/* ─── Screen Header (back + step) ────────────────────── */
-.screen-header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-  padding-top: env(safe-area-inset-top, 8px);
-}
-
-.btn-back {
-  background: var(--color-glass);
-  border: 1px solid var(--color-border);
-  color: var(--gold-200);
-  font-size: 1.5rem;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: var(--transition-base);
-  padding-bottom: 2px;
-  line-height: 1;
-}
-
-.btn-back:hover, .btn-back:active {
-  background: var(--color-glass-hover);
-  border-color: var(--color-border-glow);
-  box-shadow: var(--shadow-gold);
-}
-
-.screen-step {
-  font-family: var(--font-heading);
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold-300);
-  opacity: 0.8;
-}
-
-/* ════════════════════════════════════════════════════════
-   SCREEN 1 — START
-════════════════════════════════════════════════════════ */
-#screen-start .screen-inner {
-  justify-content: center;
-  gap: 32px;
-}
-
-/* ─── Sigil ──────────────────────────────────────────── */
-.sigil-container {
-  width: 160px;
-  height: 160px;
-  position: relative;
-}
-
-.sigil {
-  width: 100%;
-  height: 100%;
-  animation: sigil-rotate 30s linear infinite;
-  filter: drop-shadow(0 0 8px rgba(200,150,60,0.4));
-}
-
-@keyframes sigil-rotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-/* ─── Title Block ────────────────────────────────────── */
-.title-block {
-  text-align: center;
-}
-
-.app-title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  line-height: 1;
-}
-
-.title-top {
-  font-family: var(--font-heading);
-  font-size: 0.9rem;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  color: var(--gold-300);
-  animation: fade-in 1s 0.3s both;
-}
-
-.title-main {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 14vw, 4.5rem);
-  font-weight: 700;
-  background: linear-gradient(135deg, var(--gold-100) 0%, var(--gold-200) 40%, var(--gold-300) 80%, var(--gold-100) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 20px rgba(200,150,60,0.5));
-  animation: fade-in 1s 0.5s both, shimmer 4s 1.5s ease-in-out infinite;
-  background-size: 200% auto;
-}
-
-.title-sub {
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: 1rem;
-  color: var(--violet-200);
-  opacity: 0.8;
-  letter-spacing: 0.15em;
-  animation: fade-in 1s 0.7s both;
-}
-
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes shimmer {
-  0%, 100% { background-position: 0% center; }
-  50%       { background-position: 100% center; }
-}
-
-/* ─── Start Button ───────────────────────────────────── */
-.start-btn-wrap {
-  animation: fade-in 1s 1s both;
-}
-
-.btn-start {
-  position: relative;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.btn-glow-ring {
-  position: absolute;
-  inset: -8px;
-  border-radius: 60px;
-  border: 1px solid var(--color-border-glow);
-  animation: pulse-ring 2.5s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes pulse-ring {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50%       { opacity: 1;   transform: scale(1.04); box-shadow: 0 0 30px rgba(200,150,60,0.3); }
-}
-
-.btn-inner {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px 36px;
-  background: linear-gradient(135deg, rgba(124,58,237,0.3) 0%, rgba(190,24,93,0.2) 100%);
-  border: 1px solid var(--color-border-glow);
-  border-radius: 50px;
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--gold-200);
-  backdrop-filter: blur(12px);
-  transition: var(--transition-base);
-  box-shadow: var(--shadow-violet), inset 0 1px 0 rgba(255,255,255,0.1);
-}
-
-.btn-start:hover .btn-inner,
-.btn-start:active .btn-inner {
-  background: linear-gradient(135deg, rgba(124,58,237,0.5) 0%, rgba(190,24,93,0.35) 100%);
-  box-shadow: var(--shadow-violet), 0 0 40px rgba(200,150,60,0.2), inset 0 1px 0 rgba(255,255,255,0.15);
-  transform: translateY(-2px);
-}
-
-.btn-icon {
-  font-size: 1.1rem;
-  opacity: 0.8;
-}
-
-.btn-text {
-  white-space: nowrap;
-}
-
-.start-tagline {
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: 0.9rem;
-  color: var(--violet-200);
-  opacity: 0.6;
-  text-align: center;
-  letter-spacing: 0.1em;
-  animation: fade-in 1s 1.3s both;
-}
-
-/* ════════════════════════════════════════════════════════
-   SCREEN 2 — QUESTION
-════════════════════════════════════════════════════════ */
-#screen-question .screen-inner {
-  justify-content: flex-start;
-}
-
-.question-block {
-  width: 100%;
-  max-width: 480px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  flex: 1;
-  justify-content: center;
-  padding-bottom: 40px;
-}
-
-.question-icon {
-  font-size: 3rem;
-  filter: drop-shadow(0 0 12px rgba(124,58,237,0.6));
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-8px); }
-}
-
-.question-title {
-  font-family: var(--font-heading);
-  font-size: clamp(1.2rem, 5vw, 1.6rem);
-  font-weight: 600;
-  text-align: center;
-  line-height: 1.4;
-  color: var(--gold-100);
-}
-
-.question-hint {
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: 0.95rem;
-  color: var(--violet-200);
-  opacity: 0.7;
-  text-align: center;
-}
-
-/* ─── Input ──────────────────────────────────────────── */
-.input-wrap {
-  width: 100%;
-  position: relative;
-}
-
-.question-input {
-  width: 100%;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  font-family: var(--font-body);
-  font-size: 1.05rem;
-  color: var(--gold-100);
-  resize: none;
-  outline: none;
-  backdrop-filter: blur(12px);
-  transition: border-color var(--transition-base), box-shadow var(--transition-base);
-  line-height: 1.6;
-}
-
-.question-input::placeholder {
-  color: rgba(200, 150, 60, 0.35);
-  font-style: italic;
-}
-
-.question-input:focus {
-  border-color: var(--color-border-glow);
-  box-shadow: 0 0 0 1px var(--color-border-glow), var(--shadow-gold);
-}
-
-.input-char-count {
-  position: absolute;
-  bottom: 8px;
-  right: 12px;
-  font-size: 0.7rem;
-  color: var(--gold-400);
-  font-family: var(--font-heading);
-  letter-spacing: 0.05em;
-}
-
-/* ─── Reveal Button ──────────────────────────────────── */
-.btn-reveal {
-  width: 100%;
-  padding: 16px 24px;
-  background: linear-gradient(135deg, var(--violet-300) 0%, var(--crimson) 100%);
-  border: none;
-  border-radius: var(--radius-md);
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gold-100);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  transition: var(--transition-spring);
-  box-shadow: 0 4px 20px rgba(124,58,237,0.4);
-  position: relative;
-  overflow: hidden;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.btn-reveal::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-  pointer-events: none;
-}
-
-.btn-reveal:hover, .btn-reveal:active {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(124,58,237,0.5), 0 0 20px rgba(200,150,60,0.2);
-}
-
-.btn-arrow {
-  transition: transform var(--transition-base);
-}
-
-.btn-reveal:hover .btn-arrow {
-  transform: translateX(4px);
-}
-
-/* ════════════════════════════════════════════════════════
-   SCREEN 3 — CARD SELECTION
-════════════════════════════════════════════════════════ */
-#screen-selection .screen-inner {
-  justify-content: flex-start;
-  padding-bottom: 100px;
-}
-
-.selection-top {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.selection-title {
-  font-family: var(--font-heading);
-  font-size: clamp(1.2rem, 5vw, 1.6rem);
-  font-weight: 600;
-  color: var(--gold-200);
-  margin-bottom: 8px;
-}
-
-.selection-hint {
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: 0.9rem;
-  color: var(--violet-200);
-  opacity: 0.7;
-  margin-bottom: 12px;
-}
-
-.selection-counter {
-  font-family: var(--font-heading);
-  font-size: 0.8rem;
-  letter-spacing: 0.15em;
-  color: var(--gold-300);
-  text-transform: uppercase;
-}
-
-#cards-chosen {
-  color: var(--gold-200);
-  font-size: 1.1rem;
-  transition: transform 0.2s var(--transition-spring);
-  display: inline-block;
-}
-
-/* ─── Card Spread Grid ───────────────────────────────── */
-.card-spread {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  width: 100%;
-  max-width: 500px;
-  padding: 4px;
-}
-
-/* ─── Individual Card ────────────────────────────────── */
-.tarot-card-wrap {
-  perspective: 700px;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-}
-
-/* Card aspect ratio: classic tarot ~2:3.5 */
-.tarot-card {
-  width: 100%;
-  aspect-ratio: 0.6;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: var(--radius-sm);
-}
-
-.tarot-card.flipped {
-  transform: rotateY(180deg);
-}
-
-.tarot-card.selected-glow .card-back,
-.tarot-card.selected-glow .card-front {
-  box-shadow: 0 0 20px rgba(200,150,60,0.8), 0 0 40px rgba(200,150,60,0.4);
-}
-
-/* Card face base */
-.card-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-}
-
-/* ─── Card Back ──────────────────────────────────────── */
-.card-back {
-  background:
-    repeating-linear-gradient(
-      45deg,
-      rgba(124,58,237,0.12) 0px,
-      rgba(124,58,237,0.12) 1px,
-      transparent 1px,
-      transparent 8px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      rgba(200,150,60,0.08) 0px,
-      rgba(200,150,60,0.08) 1px,
-      transparent 1px,
-      transparent 8px
-    ),
-    linear-gradient(160deg, #1a0a3a 0%, #0d0a1a 50%, #1a0a3a 100%);
-  border: 1px solid rgba(200,150,60,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: box-shadow var(--transition-base), border-color var(--transition-base);
-}
-
-.card-back-inner {
-  width: 80%;
-  height: 85%;
-  border: 1px solid rgba(200,150,60,0.2);
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.card-back-symbol {
-  font-size: clamp(1.2rem, 4vw, 1.8rem);
-  color: rgba(200,150,60,0.6);
-  line-height: 1;
-}
-
-.card-back-star {
-  font-size: clamp(0.5rem, 1.5vw, 0.65rem);
-  color: rgba(200,150,60,0.35);
-  letter-spacing: 0.2em;
-}
-
-/* Hover effect on card back */
-.tarot-card-wrap:not(.is-flipped):hover .card-back {
-  border-color: rgba(200,150,60,0.7);
-  box-shadow: 0 0 16px rgba(200,150,60,0.3), 0 4px 20px rgba(0,0,0,0.5);
-  transform: translateY(-4px) scale(1.02);
-}
-
-.tarot-card-wrap:not(.is-flipped) .tarot-card {
-  transition: transform 0.2s ease; /* for hover lift */
-}
-
-.tarot-card-wrap:not(.is-flipped):hover .tarot-card {
-  transform: translateY(-4px) scale(1.02);
-}
-
-.tarot-card-wrap.is-flipped .tarot-card {
-  transform: rotateY(180deg);
-}
-
-/* ─── Card Front ─────────────────────────────────────── */
-.card-front {
-  transform: rotateY(180deg);
-  background: linear-gradient(160deg, #1a0836 0%, #090714 100%);
-  border: 1px solid rgba(200,150,60,0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 4px;
-}
-
-.card-img-wrap {
-  flex: 1;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(160deg, rgba(124,58,237,0.2) 0%, rgba(0,0,0,0.5) 100%);
-  min-height: 0;
-}
-
-.card-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-/* Placeholder art when no image */
-.card-placeholder-art {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 4px;
-}
-
-.card-placeholder-symbol {
-  font-size: clamp(1.4rem, 5vw, 2.2rem);
-  filter: drop-shadow(0 0 6px rgba(200,150,60,0.5));
-}
-
-.card-placeholder-num {
-  font-family: var(--font-heading);
-  font-size: clamp(0.45rem, 1.4vw, 0.6rem);
-  color: var(--gold-300);
-  text-align: center;
-  letter-spacing: 0.05em;
-}
-
-.card-label {
-  width: 100%;
-  text-align: center;
-  padding: 3px 2px 2px;
-}
-
-.card-label-text {
-  font-family: var(--font-heading);
-  font-size: clamp(0.4rem, 1.3vw, 0.55rem);
-  color: var(--gold-200);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-}
-
-/* ─── Read Button ────────────────────────────────────── */
-.btn-read {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 14px 36px;
-  background: linear-gradient(135deg, var(--gold-300) 0%, var(--gold-200) 100%);
-  border: none;
-  border-radius: 50px;
-  font-family: var(--font-heading);
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #0d0a1a;
-  cursor: pointer;
-  transition: var(--transition-spring);
-  box-shadow: 0 4px 24px rgba(200,150,60,0.5);
-  z-index: 20;
-  white-space: nowrap;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.btn-read:hover, .btn-read:active {
-  transform: translateX(-50%) translateY(-2px);
-  box-shadow: 0 8px 30px rgba(200,150,60,0.6);
-}
-
-.hidden {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transform: translateX(-50%) translateY(10px) !important;
-}
-
-/* ════════════════════════════════════════════════════════
-   SCREEN 4 — RESULTS
-════════════════════════════════════════════════════════ */
-#screen-result .screen-inner {
-  justify-content: flex-start;
-  gap: 24px;
-}
-
-.result-header {
-  text-align: center;
-  padding-top: env(safe-area-inset-top, 16px);
-  width: 100%;
-}
-
-.result-title {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 6vw, 2rem);
-  background: linear-gradient(135deg, var(--gold-100), var(--gold-300));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 8px;
-}
-
-.result-question-display {
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: 0.95rem;
-  color: var(--violet-200);
-  opacity: 0.8;
-  max-width: 400px;
-  margin: 0 auto;
-  line-height: 1.5;
-}
-
-/* ─── Result Cards Row ───────────────────────────────── */
-.result-cards {
-  display: flex;
-  gap: 12px;
-  width: 100%;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.result-card-item {
-  flex: 1;
-  max-width: 140px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.result-card-item.revealed {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.result-card-img {
-  width: 100%;
-  aspect-ratio: 0.6;
-  background: linear-gradient(160deg, #1a0836 0%, #090714 100%);
-  border: 1px solid rgba(200,150,60,0.5);
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 6px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5), var(--shadow-gold);
-  padding: 8px;
-}
-
-.result-card-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.result-card-symbol {
-  font-size: 2rem;
-  filter: drop-shadow(0 0 8px rgba(200,150,60,0.5));
-}
-
-.result-card-num {
-  font-family: var(--font-heading);
-  font-size: 0.6rem;
-  color: var(--gold-300);
-  text-align: center;
-}
-
-.result-card-position {
-  font-family: var(--font-heading);
-  font-size: 0.6rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--violet-200);
-  opacity: 0.7;
-}
-
-.result-card-name {
-  font-family: var(--font-heading);
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--gold-200);
-  text-align: center;
-  line-height: 1.3;
-}
-
-.result-card-meaning {
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: 0.75rem;
-  color: var(--gold-100);
-  opacity: 0.7;
-  text-align: center;
-  line-height: 1.4;
-}
-
-/* ─── Ornate Divider ─────────────────────────────────── */
-.divider-ornate {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  max-width: 400px;
-}
-
-.divider-ornate::before,
-.divider-ornate::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(200,150,60,0.5), transparent);
-}
-
-.divider-ornate span {
-  color: var(--gold-300);
-  font-size: 0.6rem;
-  opacity: 0.7;
-}
-
-/* ─── Final Interpretation ───────────────────────────── */
-.final-interpretation {
-  width: 100%;
-  max-width: 480px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 24px 20px;
-  backdrop-filter: blur(12px);
-  box-shadow: var(--shadow-violet);
-}
-
-.interp-title {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gold-200);
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-.interp-body {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.8;
-  color: var(--gold-100);
-  opacity: 0.9;
-  text-align: center;
-  font-style: italic;
-}
-
-/* ─── Result Actions ─────────────────────────────────── */
-.result-actions {
-  width: 100%;
-  max-width: 400px;
-  padding-bottom: 20px;
-}
-
-.btn-new {
-  width: 100%;
-  padding: 14px 24px;
-  background: transparent;
-  border: 1px solid var(--color-border-glow);
-  border-radius: var(--radius-md);
-  font-family: var(--font-heading);
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold-200);
-  cursor: pointer;
-  transition: var(--transition-base);
-  backdrop-filter: blur(8px);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.btn-new:hover, .btn-new:active {
-  background: var(--color-glass);
-  box-shadow: var(--shadow-gold);
-}
-
-/* ════════════════════════════════════════════════════════
-   LOADING OVERLAY
-════════════════════════════════════════════════════════ */
-.loading-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(9, 7, 20, 0.9);
-  backdrop-filter: blur(8px);
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity var(--transition-slow);
-}
-
-.loading-overlay.hidden {
-  opacity: 0 !important;
-  pointer-events: none !important;
-  transform: none !important;
-}
-
-.loading-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.loading-spinner {
-  width: 60px;
-  height: 60px;
-  border: 2px solid rgba(200,150,60,0.2);
-  border-top-color: var(--gold-200);
-  border-radius: 50%;
-  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  box-shadow: 0 0 20px rgba(200,150,60,0.2);
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.loading-text {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  letter-spacing: 0.2em;
-  color: var(--gold-300);
-  text-transform: uppercase;
-  animation: pulse-text 2s ease-in-out infinite;
-}
-
-@keyframes pulse-text {
-  0%, 100% { opacity: 0.5; }
-  50%       { opacity: 1; }
-}
-
-/* ─── Responsive tweaks ──────────────────────────────── */
-@media (max-width: 360px) {
-  .card-spread {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
+/**
+ * ═══════════════════════════════════════════════════════════
+ * МІСТИЧНЕ ТАРО — script.js
+ * Telegram Mini App | AI-інтерпретація через Railway бекенд
+ * ═══════════════════════════════════════════════════════════
+ */
+
+'use strict';
+
+/* ──────────────────────────────────────────────────────────
+   1. НАЛАШТУВАННЯ
+────────────────────────────────────────────────────────── */
+
+// URL твого Railway бекенду
+const BACKEND_URL = 'https://tarobot-production-fa99.up.railway.app';
+
+const TOTAL_SPREAD_CARDS = 12; // скільки карт показуємо рубашкою вгору
+const CARDS_TO_PICK      = 3;  // скільки карт обирає користувач
+
+/* ──────────────────────────────────────────────────────────
+   2. TELEGRAM WEBAPP INIT
+────────────────────────────────────────────────────────── */
+function initTelegram() {
+  if (window.Telegram && window.Telegram.WebApp) {
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+    try { tg.setHeaderColor('#090714'); }     catch (_) {}
+    try { tg.setBackgroundColor('#090714'); } catch (_) {}
   }
 }
 
-@media (min-width: 500px) {
-  .card-spread {
-    grid-template-columns: repeat(5, 1fr);
+/* ──────────────────────────────────────────────────────────
+   3. ЗОРЯНЕ НЕБО (Canvas)
+────────────────────────────────────────────────────────── */
+(function initStarfield() {
+  const canvas   = document.getElementById('starfield');
+  const ctx      = canvas.getContext('2d');
+  let   stars    = [];
+  let   shooters = [];
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function seedStars() {
+    stars = [];
+    for (let i = 0; i < 160; i++) {
+      stars.push({
+        x:     Math.random() * canvas.width,
+        y:     Math.random() * canvas.height,
+        r:     Math.random() * 1.5 + 0.2,
+        alpha: Math.random(),
+        delta: (Math.random() * 0.008 + 0.002) * (Math.random() > 0.5 ? 1 : -1),
+        gold:  Math.random() < 0.15,
+      });
+    }
+  }
+
+  function loop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (const s of stars) {
+      s.alpha += s.delta;
+      if (s.alpha >= 1 || s.alpha <= 0) s.delta *= -1;
+      s.alpha = Math.max(0, Math.min(1, s.alpha));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = s.gold
+        ? `rgba(200,150,60,${s.alpha * 0.7})`
+        : `rgba(220,210,255,${s.alpha * 0.5})`;
+      ctx.fill();
+    }
+
+    for (let i = shooters.length - 1; i >= 0; i--) {
+      const s    = shooters[i];
+      const grad = ctx.createLinearGradient(s.x, s.y, s.x + s.len, s.y + s.len * 0.5);
+      grad.addColorStop(0, `rgba(255,255,230,0)`);
+      grad.addColorStop(1, `rgba(255,255,230,${s.life * 0.8})`);
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y);
+      ctx.lineTo(s.x + s.len, s.y + s.len * 0.5);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth   = 1;
+      ctx.stroke();
+      s.x    += s.vx;
+      s.y    += s.vy;
+      s.life -= 0.04;
+      if (s.life <= 0) shooters.splice(i, 1);
+    }
+
+    if (Math.random() < 0.003) {
+      shooters.push({
+        x:    Math.random() * canvas.width,
+        y:    Math.random() * canvas.height * 0.5,
+        len:  Math.random() * 80 + 40,
+        vx:   Math.random() * 5 + 3,
+        vy:   Math.random() * 3 + 1,
+        life: 1,
+      });
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener('resize', () => { resize(); seedStars(); });
+  resize();
+  seedStars();
+  loop();
+})();
+
+/* ──────────────────────────────────────────────────────────
+   4. ПОВНА КОЛОДА ТАРО (78 карт)
+────────────────────────────────────────────────────────── */
+const TAROT_DECK = [
+
+  /* ════════════════════════════════
+     СТАРШІ АРКАНИ (22 карти: 0–XXI)
+  ════════════════════════════════ */
+  {
+    name: 'Блазень', symbol: '🌟', imageFile: 'card_00.png', number: '0',
+    meaning: 'Нові початки · Невинність · Пригода',
+    interpretation: 'Тебе чекає стрибок віри. Блазень сигналізує, що ти стоїш на порозі надзвичайного нового розділу — такого, що вимагає сміливості, а не обережності.',
+  },
+  {
+    name: 'Маг', symbol: '🪄', imageFile: 'card_01.png', number: 'I',
+    meaning: 'Сила волі · Майстерність · Маніфестація',
+    interpretation: 'Ти маєш усі необхідні інструменти, щоб змінити свою реальність. Намір, підкріплений цілеспрямованою дією, — це і є алхімія творення.',
+  },
+  {
+    name: 'Верховна Жриця', symbol: '🌙', imageFile: 'card_02.png', number: 'II',
+    meaning: 'Інтуїція · Таємниця · Внутрішнє знання',
+    interpretation: 'Відповіді, яких ти шукаєш, — не в зовнішньому світі, а в тихих глибинах власної інтуїції. Верховна Жриця береже таємниці, варті знання.',
+  },
+  {
+    name: 'Імператриця', symbol: '🌸', imageFile: 'card_03.png', number: 'III',
+    meaning: 'Достаток · Родючість · Турбота',
+    interpretation: 'Всесвіт змовляється задля зростання і достатку у твоєму житті. Імператриця благословляє цей момент творчою родючістю та теплом безумовного кохання.',
+  },
+  {
+    name: 'Імператор', symbol: '👑', imageFile: 'card_04.png', number: 'IV',
+    meaning: 'Авторитет · Структура · Стабільність',
+    interpretation: 'Порядок — твій союзник. Імператор закликає закласти міцний фундамент і збудувати щось, що переживе цей момент.',
+  },
+  {
+    name: 'Ієрофант', symbol: '🗝️', imageFile: 'card_05.png', number: 'V',
+    meaning: 'Традиція · Мудрість · Духовне керівництво',
+    interpretation: 'Сакральне знання пропонується тобі через традицію або наставника. Ієрофант запрошує шанувати мудрість тих, хто прийшов до тебе.',
+  },
+  {
+    name: 'Закохані', symbol: '💞', imageFile: 'card_06.png', number: 'VI',
+    meaning: 'Кохання · Вибір · Узгодженість',
+    interpretation: 'Перед тобою важливий вибір, що коріниться у цінностях і серці. Закохані запитують: чого ти справді бажаєш?',
+  },
+  {
+    name: 'Колісниця', symbol: '⚡', imageFile: 'card_07.png', number: 'VII',
+    meaning: 'Рішучість · Перемога · Контроль',
+    interpretation: 'Стримай свої протилежні сили і рухайся вперед. Колісниця обіцяє перемогу тим, хто зберігає дисципліну.',
+  },
+  {
+    name: 'Сила', symbol: '🦁', imageFile: 'card_08.png', number: 'VIII',
+    meaning: 'Мужність · Терпіння · Внутрішня сила',
+    interpretation: 'Справжня сила — тиха міць співчуття, яке зустрічає труднощі без страху. Усередині тебе більше стійкості, ніж ти усвідомлюєш.',
+  },
+  {
+    name: 'Відлюдник', symbol: '🕯️', imageFile: 'card_09.png', number: 'IX',
+    meaning: 'Самота · Рефлексія · Внутрішнє керівництво',
+    interpretation: 'Настав час священного усамітнення. Відлюдник освітлює шлях усередину — шукай тиші, щоб почути найглибшу мудрість.',
+  },
+  {
+    name: 'Колесо Фортуни', symbol: '☸️', imageFile: 'card_10.png', number: 'X',
+    meaning: 'Цикли · Доля · Поворотні моменти',
+    interpretation: 'Колесо обертається і твоя доля змінюється. Цей момент змін є частиною більш масштабного, цілеспрямованого узору.',
+  },
+  {
+    name: 'Справедливість', symbol: '⚖️', imageFile: 'card_11.png', number: 'XI',
+    meaning: 'Правда · Чесність · Причина і наслідок',
+    interpretation: 'Закон причини і наслідку діє. Справедливість вимагає чесності — з іншими і, найголовніше, з самим собою.',
+  },
+  {
+    name: 'Повішений', symbol: '🌀', imageFile: 'card_12.png', number: 'XII',
+    meaning: 'Пауза · Здача · Новий погляд',
+    interpretation: 'Відпусти контроль і побач ситуацію з нового кута — ясність приходить у тиші та прийнятті.',
+  },
+  {
+    name: 'Смерть', symbol: '🦋', imageFile: 'card_13.png', number: 'XIII',
+    meaning: 'Трансформація · Завершення · Відродження',
+    interpretation: 'Те, що завершується, звільняє місце для нового. Це глибоке перетворення — старе "я" розчиняється, щоб народилось нове.',
+  },
+  {
+    name: 'Поміркованість', symbol: '✨', imageFile: 'card_14.png', number: 'XIV',
+    meaning: 'Баланс · Терпіння · Помірність',
+    interpretation: 'Мистецтво алхімії живе посередині шляху. Залишайся терплячим — постійні зусилля створюють тривалу гармонію.',
+  },
+  {
+    name: 'Диявол', symbol: '🔗', imageFile: 'card_15.png', number: 'XV',
+    meaning: 'Тінь · Кайдани · Матеріалізм',
+    interpretation: 'Можливо, тебе сковують переконання або звички, які більше не служать. Але кайдани слабші, ніж здаються — усвідомлення є першим кроком до свободи.',
+  },
+  {
+    name: 'Вежа', symbol: '🌩️', imageFile: 'card_16.png', number: 'XVI',
+    meaning: 'Раптова зміна · Одкровення · Хаос',
+    interpretation: 'Раптове потрясіння руйнує те, що було неправдивим. Те, що залишається після бурі — справжнє і варте збереження.',
+  },
+  {
+    name: 'Зірка', symbol: '⭐', imageFile: 'card_17.png', number: 'XVII',
+    meaning: 'Надія · Зцілення · Натхнення',
+    interpretation: 'Після бурі з\'являється Зірка. Довіряй — всесвіт веде тебе до зцілення та сяючого майбутнього.',
+  },
+  {
+    name: 'Місяць', symbol: '🌑', imageFile: 'card_18.png', number: 'XVIII',
+    meaning: 'Ілюзія · Страх · Підсвідоме',
+    interpretation: 'Не все є таким, яким здається. Іди крізь свої страхи з усвідомленістю, а не уникненням — і шлях проясниться.',
+  },
+  {
+    name: 'Сонце', symbol: '☀️', imageFile: 'card_19.png', number: 'XIX',
+    meaning: 'Радість · Успіх · Життєва сила',
+    interpretation: 'Тепло, ясність і сяючий успіх оточують цей момент. Дозволь собі відчути справжню радість і поділитися нею зі світом.',
+  },
+  {
+    name: 'Суд', symbol: '📯', imageFile: 'card_20.png', number: 'XX',
+    meaning: 'Пробудження · Спокута · Покликання',
+    interpretation: 'Глибоке внутрішнє пробудження закликає тебе прийняти своє справжнє "я". Відповідай на своє вище покликання без вагань.',
+  },
+  {
+    name: 'Світ', symbol: '🌍', imageFile: 'card_21.png', number: 'XXI',
+    meaning: 'Завершення · Інтеграція · Цілісність',
+    interpretation: 'Величний цикл досягає свого завершення. Ти інтегрував свій досвід і прийшов до місця глибокого знання та цілісності.',
+  },
+
+  /* ════════════════════════════════
+     МАСТЬ ЧАШІ (Cups) — 14 карт
+  ════════════════════════════════ */
+  {
+    name: 'Туз Чаш', symbol: '🏆', imageFile: 'cups_01.png', number: 'Туз',
+    meaning: 'Нове кохання · Емоційний початок · Переповненість',
+    interpretation: 'Тобі простягають переповнену чашу емоційних можливостей — насіння кохання і творчого самовираження. Прийми з відкритим серцем.',
+  },
+  {
+    name: 'Двійка Чаш', symbol: '💑', imageFile: 'cups_02.png', number: 'II',
+    meaning: 'Партнерство · Взаємне кохання · З\'єднання',
+    interpretation: 'Між двома душами виникає глибокий і рівноправний зв\'язок. Це союз, побудований на взаємній повазі та щирому почутті.',
+  },
+  {
+    name: 'Трійка Чаш', symbol: '🥂', imageFile: 'cups_03.png', number: 'III',
+    meaning: 'Святкування · Дружба · Спільнота',
+    interpretation: 'Час святкувати разом із тими, кого любиш. Спільна радість множиться — відкрий серце для вдячності та єднання.',
+  },
+  {
+    name: 'Четвірка Чаш', symbol: '😔', imageFile: 'cups_04.png', number: 'IV',
+    meaning: 'Роздуми · Апатія · Переоцінка',
+    interpretation: 'Поки ти занурений у роздуми, всесвіт пропонує нові можливості. Підведи очі — дар може бути прямо перед тобою.',
+  },
+  {
+    name: 'П\'ятірка Чаш', symbol: '😢', imageFile: 'cups_05.png', number: 'V',
+    meaning: 'Втрата · Жаль · Горе',
+    interpretation: 'Визнай свій біль, але не забудь обернутись — дві чаші ще стоять. Навіть у втраті є щось, за що варто триматись.',
+  },
+  {
+    name: 'Шістка Чаш', symbol: '🌺', imageFile: 'cups_06.png', number: 'VI',
+    meaning: 'Ностальгія · Невинність · Повернення до минулого',
+    interpretation: 'Минуле тягнеться вперед із подарунками — возз\'єднання або зв\'язок із невинним "я". Шануй те, звідки ти прийшов.',
+  },
+  {
+    name: 'Сімка Чаш', symbol: '🌈', imageFile: 'cups_07.png', number: 'VII',
+    meaning: 'Ілюзії · Мрії · Вибір',
+    interpretation: 'Перед тобою безліч спокусливих варіантів, але не всі вони реальні. Зроби крок назад і оціни, яка мрія насправді твоя.',
+  },
+  {
+    name: 'Вісімка Чаш', symbol: '🚶', imageFile: 'cups_08.png', number: 'VIII',
+    meaning: 'Відхід · Пошук сенсу · Розчарування',
+    interpretation: 'Настав час залишити те, що більше не наповнює. Відхід — це не поразка, а сміливий крок назустріч глибшому сенсу.',
+  },
+  {
+    name: 'Дев\'ятка Чаш', symbol: '😊', imageFile: 'cups_09.png', number: 'IX',
+    meaning: 'Виконання бажань · Задоволення · Добробут',
+    interpretation: 'Карта бажань: те, про що ти мрієш, цілком у межах досяжності. Насолоджуйся плодами своїх зусиль — ти цього заслуговуєш.',
+  },
+  {
+    name: 'Десятка Чаш', symbol: '🌟', imageFile: 'cups_10.png', number: 'X',
+    meaning: 'Щастя · Гармонія · Сімейна радість',
+    interpretation: 'Повнота емоційного щастя і глибокий мир у стосунках. Це образ сповненого, гармонійного життя — він реальний і досяжний.',
+  },
+  {
+    name: 'Паж Чаш', symbol: '🐟', imageFile: 'cups_11.png', number: 'Паж',
+    meaning: 'Творчість · Інтуїція · Вісті',
+    interpretation: 'Несподіване повідомлення або творчий імпульс прибуває. Залишайся відкритим до дивовижного — уява є вратами до нового.',
+  },
+  {
+    name: 'Лицар Чаш', symbol: '🐴', imageFile: 'cups_12.png', number: 'Лицар',
+    meaning: 'Романтика · Ідеалізм · Привабливість',
+    interpretation: 'Романтичний і мрійливий посланник наближається. Дозволь серцю відкритися назустріч красі та ніжності моменту.',
+  },
+  {
+    name: 'Королева Чаш', symbol: '🔮', imageFile: 'cups_13.png', number: 'Королева',
+    meaning: 'Співчуття · Інтуїція · Емоційна глибина',
+    interpretation: 'Дій з емпатією і довіряй глибокому знанню свого емоційного інтелекту. Нехай співчуття веде твій наступний крок.',
+  },
+  {
+    name: 'Король Чаш', symbol: '🌊', imageFile: 'cups_14.png', number: 'Король',
+    meaning: 'Емоційна зрілість · Мудрість серця · Баланс',
+    interpretation: 'Справжня мудрість — відчувати глибоко і все ж зберігати рівновагу. Керуй своїм внутрішнім світом із майстерністю зрілого серця.',
+  },
+
+  /* ════════════════════════════════
+     МАСТЬ ЖЕЗЛИ (Wands) — 14 карт
+  ════════════════════════════════ */
+  {
+    name: 'Туз Жезлів', symbol: '🔥', imageFile: 'wands_01.png', number: 'Туз',
+    meaning: 'Натхнення · Новий проєкт · Творча іскра',
+    interpretation: 'Блискавка творчості вдарила! Слідуй цьому натхненному імпульсу, поки вагання не погасило вогонь.',
+  },
+  {
+    name: 'Двійка Жезлів', symbol: '🌐', imageFile: 'wands_02.png', number: 'II',
+    meaning: 'Планування · Амбіції · Вибір шляху',
+    interpretation: 'Ти стоїш на роздоріжжі з усім світом перед собою. Думай стратегічно — великі мрії потребують сміливого планування.',
+  },
+  {
+    name: 'Трійка Жезлів', symbol: '⛵', imageFile: 'wands_03.png', number: 'III',
+    meaning: 'Розширення · Очікування · Далекі горизонти',
+    interpretation: 'Твої зусилля вже запущені у плавання. Тримай зір спрямованим на горизонт — результати наближаються.',
+  },
+  {
+    name: 'Четвірка Жезлів', symbol: '🎉', imageFile: 'wands_04.png', number: 'IV',
+    meaning: 'Святкування · Стабільність · Гармонія вдома',
+    interpretation: 'Час відсвяткувати досягнення і знайти радість у домашньому вогнищі. Міцна основа дозволяє тобі розцвітати.',
+  },
+  {
+    name: 'П\'ятірка Жезлів', symbol: '⚔️', imageFile: 'wands_05.png', number: 'V',
+    meaning: 'Конкуренція · Конфлікт · Боротьба',
+    interpretation: 'Хаос і суперечки — тимчасові. Знайди спосіб направити цю енергію у продуктивне русло, замість взаємних зіткнень.',
+  },
+  {
+    name: 'Шістка Жезлів', symbol: '🏆', imageFile: 'wands_06.png', number: 'VI',
+    meaning: 'Перемога · Визнання · Лідерство',
+    interpretation: 'Твій успіх заслуговує на визнання. Прийми лавровий вінець з гідністю і продовжуй надихати оточуючих.',
+  },
+  {
+    name: 'Сімка Жезлів', symbol: '🛡️', imageFile: 'wands_07.png', number: 'VII',
+    meaning: 'Захист позиції · Наполегливість · Виклик',
+    interpretation: 'Відстоюй свою справу навіть під тиском. Ти на вершині — і маєш усі підстави там залишатися.',
+  },
+  {
+    name: 'Вісімка Жезлів', symbol: '🏹', imageFile: 'wands_08.png', number: 'VIII',
+    meaning: 'Швидкий рух · Вісті · Прискорення',
+    interpretation: 'Події розвиваються стрімко. Будь готовий діяти швидко — вітер удачі надує вітрила саме зараз.',
+  },
+  {
+    name: 'Дев\'ятка Жезлів', symbol: '🧱', imageFile: 'wands_09.png', number: 'IX',
+    meaning: 'Стійкість · Захист · Майже у фіналі',
+    interpretation: 'Ти вже пройшов такий довгий шлях — не здавайся тепер. Зберися з останніми силами: фініш ближче, ніж здається.',
+  },
+  {
+    name: 'Десятка Жезлів', symbol: '😓', imageFile: 'wands_10.png', number: 'X',
+    meaning: 'Тягар · Перевантаження · Відповідальність',
+    interpretation: 'Ти несеш надто багато сам. Делегуй, відпусти або переосмисли свій тягар — мудрість полягає у знанні своїх меж.',
+  },
+  {
+    name: 'Паж Жезлів', symbol: '🌱', imageFile: 'wands_11.png', number: 'Паж',
+    meaning: 'Ентузіазм · Дослідження · Вільний дух',
+    interpretation: 'Підходь до цієї ситуації з цікавістю і натхненням. Дослідник у тобі готовий — скажи "так" пригоді.',
+  },
+  {
+    name: 'Лицар Жезлів', symbol: '🐎', imageFile: 'wands_12.png', number: 'Лицар',
+    meaning: 'Пристрасть · Пригода · Імпульсивність',
+    interpretation: 'Дій сміливо і швидко, але не дозволяй нетерпінню підвести. Перетвори цей вогненний порив на цілеспрямований рух.',
+  },
+  {
+    name: 'Королева Жезлів', symbol: '🌻', imageFile: 'wands_13.png', number: 'Королева',
+    meaning: 'Харизма · Впевненість · Незалежність',
+    interpretation: 'Сяй своєю автентичною природою. Твоя тепла енергія і жива присутність здатні надихнути всіх навколо.',
+  },
+  {
+    name: 'Король Жезлів', symbol: '🦅', imageFile: 'wands_14.png', number: 'Король',
+    meaning: 'Харизма · Бачення · Сміливе лідерство',
+    interpretation: 'Заяви про своє бачення і веди з вогненною переконаністю. Надихай інших через пристрасть та непохитний дух.',
+  },
+
+  /* ════════════════════════════════
+     МАСТЬ МЕЧІ (Swords) — 14 карт
+  ════════════════════════════════ */
+  {
+    name: 'Туз Мечів', symbol: '🗡️', imageFile: 'swords_01.png', number: 'Туз',
+    meaning: 'Ясність · Правда · Розумовий прорив',
+    interpretation: 'Меч кришталевої ясності розрізає плутанину. Істина, навколо якої ти кружляв, тепер неможлива для ігнорування.',
+  },
+  {
+    name: 'Двійка Мечів', symbol: '🙈', imageFile: 'swords_02.png', number: 'II',
+    meaning: 'Тупик · Невизначеність · Відмова бачити',
+    interpretation: 'Рішення, якого ти уникаєш, не зникне саме по собі. Зніми пов\'язку з очей — ясність вже доступна тобі.',
+  },
+  {
+    name: 'Трійка Мечів', symbol: '💔', imageFile: 'swords_03.png', number: 'III',
+    meaning: 'Серцевий біль · Горе · Болюча правда',
+    interpretation: 'Визнаний біль — це біль, який може зцілитися. Повністю відчуй це горе, а не заперечуй — лише тоді почнеться зцілення.',
+  },
+  {
+    name: 'Четвірка Мечів', symbol: '🛌', imageFile: 'swords_04.png', number: 'IV',
+    meaning: 'Відпочинок · Відновлення · Споглядання',
+    interpretation: 'Тіло й розум потребують відновлення. Дозволь собі паузу — не бездіяльність, а свідомий відпочинок перед наступним рухом.',
+  },
+  {
+    name: 'П\'ятірка Мечів', symbol: '😤', imageFile: 'swords_05.png', number: 'V',
+    meaning: 'Конфлікт · Поразка · Пустоцвіт перемоги',
+    interpretation: 'Перемога будь-якою ціною може виявитися порожньою. Запитай себе: чи варта ця битва своєї ціни?',
+  },
+  {
+    name: 'Шістка Мечів', symbol: '🚤', imageFile: 'swords_06.png', number: 'VI',
+    meaning: 'Перехід · Рух уперед · Зцілення',
+    interpretation: 'Ти залишаєш турботи позаду і рухаєшся до спокійніших вод. Цей перехід — початок зцілення.',
+  },
+  {
+    name: 'Сімка Мечів', symbol: '🦊', imageFile: 'swords_07.png', number: 'VII',
+    meaning: 'Обман · Стратегія · Ухиляння',
+    interpretation: 'Будь обачний із тими, хто діє нечесно — і сам не вдавайся до хитрощів. Справжня стратегія не потребує обману.',
+  },
+  {
+    name: 'Вісімка Мечів', symbol: '⛓️', imageFile: 'swords_08.png', number: 'VIII',
+    meaning: 'Обмеження · Страх · Самоув\'язнення',
+    interpretation: 'Обмеження, які ти відчуваєш, переважно у твоїй голові. Зроби крок убік — і побачиш, що шлях вільний.',
+  },
+  {
+    name: 'Дев\'ятка Мечів', symbol: '😰', imageFile: 'swords_09.png', number: 'IX',
+    meaning: 'Тривога · Нічний жах · Надмірні думки',
+    interpretation: 'Думки серед ночі здаються більш страшними, ніж є насправді. Стривожений розум потребує ніжності, а не ще більше тривоги.',
+  },
+  {
+    name: 'Десятка Мечів', symbol: '🌅', imageFile: 'swords_10.png', number: 'X',
+    meaning: 'Кінець циклу · Поразка · Відродження',
+    interpretation: 'Найтемніший момент передує світанку. Цей болючий фінал відкриває двері для справжнього відродження.',
+  },
+  {
+    name: 'Паж Мечів', symbol: '🦜', imageFile: 'swords_11.png', number: 'Паж',
+    meaning: 'Цікавість · Пильність · Гострий розум',
+    meaning: 'Допитливість · Спостережливість · Комунікація',
+    interpretation: 'Твій розум гострий і готовий до навчання. Ставь запитання, шукай правду і не бійся висловлювати свої думки.',
+  },
+  {
+    name: 'Лицар Мечів', symbol: '💨', imageFile: 'swords_12.png', number: 'Лицар',
+    meaning: 'Рішучість · Швидкі дії · Безкомпромісність',
+    interpretation: 'Дій швидко і сміливо, але не забувай про наслідки. Гострий розум без стриманості може порізати того, кого любиш.',
+  },
+  {
+    name: 'Королева Мечів', symbol: '🌬️', imageFile: 'swords_13.png', number: 'Королева',
+    meaning: 'Незалежність · Пряма мова · Розум',
+    interpretation: 'Говори правду з ясністю і повагою. Твій незалежний розум — велика сила, якщо поєднаний із серцем.',
+  },
+  {
+    name: 'Король Мечів', symbol: '⚖️', imageFile: 'swords_14.png', number: 'Король',
+    meaning: 'Авторитет · Розумна сила · Справедливість',
+    interpretation: 'Приймай рішення, ґрунтуючись на розумі й принципах, а не на емоціях. Справедливий суд вимагає холодного розуму і теплого серця.',
+  },
+
+  /* ════════════════════════════════
+     МАСТЬ ПЕНТАКЛІ (Pentacles) — 14 карт
+  ════════════════════════════════ */
+  {
+    name: 'Туз Пентаклів', symbol: '💰', imageFile: 'pents_01.png', number: 'Туз',
+    meaning: 'Можливість · Процвітання · Новий початок',
+    interpretation: 'Конкретна нова можливість у матеріальному світі вже поряд. Прийми цей дар з практичною вдячністю.',
+  },
+  {
+    name: 'Двійка Пентаклів', symbol: '🤹', imageFile: 'pents_02.png', number: 'II',
+    meaning: 'Баланс · Адаптивність · Жонглювання',
+    interpretation: 'Ти успішно балансуєш між кількома справами — але слідкуй за тим, щоб жодна не впала. Гнучкість — твоя суперсила зараз.',
+  },
+  {
+    name: 'Трійка Пентаклів', symbol: '🏗️', imageFile: 'pents_03.png', number: 'III',
+    meaning: 'Командна робота · Майстерність · Будівництво',
+    interpretation: 'Великі справи будуються разом. Твій внесок і навички цінні — найкращих результатів досягають у співпраці.',
+  },
+  {
+    name: 'Четвірка Пентаклів', symbol: '🤑', imageFile: 'pents_04.png', number: 'IV',
+    meaning: 'Безпека · Стримання · Надмірний контроль',
+    interpretation: 'Захист того, що має цінність — мудрість. Але надмірне чіпляння за матеріальне може стати тягарем, а не захистом.',
+  },
+  {
+    name: 'П\'ятірка Пентаклів', symbol: '❄️', imageFile: 'pents_05.png', number: 'V',
+    meaning: 'Нестача · Труднощі · Відчуття покинутості',
+    interpretation: 'Навіть у найважчі часи допомога ближче, ніж здається. Підніми голову і поглянь навколо — двері відкриті.',
+  },
+  {
+    name: 'Шістка Пентаклів', symbol: '🎁', imageFile: 'pents_06.png', number: 'VI',
+    meaning: 'Щедрість · Баланс давати і брати · Благодійність',
+    interpretation: 'Ти знаходишся на боці того, хто дає або отримує. В обох випадках пам\'ятай: справжня щедрість не принижує.',
+  },
+  {
+    name: 'Сімка Пентаклів', symbol: '🌾', imageFile: 'pents_07.png', number: 'VII',
+    meaning: 'Терпіння · Оцінка результатів · Інвестиція',
+    interpretation: 'Ти зробив посів — тепер час оцінити, чи правильне поле обраний. Терпіння та коригування курсу принесуть урожай.',
+  },
+  {
+    name: 'Вісімка Пентаклів', symbol: '🔨', imageFile: 'pents_08.png', number: 'VIII',
+    meaning: 'Ретельна праця · Майстерність · Навчання',
+    interpretation: 'Присвяти себе своєму ремеслу з усієї душею. Майстерність приходить через наполегливе повторення і любов до справи.',
+  },
+  {
+    name: 'Дев\'ятка Пентаклів', symbol: '🌿', imageFile: 'pents_09.png', number: 'IX',
+    meaning: 'Незалежність · Достаток · Самодостатність',
+    interpretation: 'Ти досяг рівня комфорту і впевненості завдяки власним зусиллям. Насолоджуйся плодами своєї незалежності.',
+  },
+  {
+    name: 'Десятка Пентаклів', symbol: '🏰', imageFile: 'pents_10.png', number: 'X',
+    meaning: 'Спадщина · Достаток · Сім\'я',
+    interpretation: 'Довгострокова безпека і багата спадщина в межах досяжності — не лише грошова, а й мудрість, кохання і міцні основи.',
+  },
+  {
+    name: 'Паж Пентаклів', symbol: '📚', imageFile: 'pents_11.png', number: 'Паж',
+    meaning: 'Навчання · Практичність · Нові навички',
+    interpretation: 'Підійди до нової можливості з готовністю навчатися. Кожен великий майстер колись був новачком із запалом у серці.',
+  },
+  {
+    name: 'Лицар Пентаклів', symbol: '🐂', imageFile: 'pents_12.png', number: 'Лицар',
+    meaning: 'Надійність · Терпіння · Методичність',
+    interpretation: 'Повільний і стабільний виграє цю гонку. Твоя надійність і наполегливість — найміцніші інструменти досягнення мети.',
+  },
+  {
+    name: 'Королева Пентаклів', symbol: '🌳', imageFile: 'pents_13.png', number: 'Королева',
+    meaning: 'Турботливість · Практична мудрість · Достаток',
+    interpretation: 'Твори добробут і затишок для себе та близьких з любов\'ю і практичністю. Справжня розкіш — це безпека і тепло домашнього вогнища.',
+  },
+  {
+    name: 'Король Пентаклів', symbol: '💎', imageFile: 'pents_14.png', number: 'Король',
+    meaning: 'Достаток · Ділова мудрість · Щедрість',
+    interpretation: 'Ти збудував або будуєш щось міцне і цінне. Справжня заможність — це не лише матеріальне, а й мудрість, якою можна ділитися.',
+  },
+];
+
+/* ──────────────────────────────────────────────────────────
+   5. СТАН ДОДАТКУ
+────────────────────────────────────────────────────────── */
+let userQuestion  = '';
+let shuffledDeck  = [];
+let selectedCards = [];
+let flipCount     = 0;
+
+/* ──────────────────────────────────────────────────────────
+   6. НАВІГАЦІЯ МІЖ ЕКРАНАМИ
+────────────────────────────────────────────────────────── */
+let currentScreenId = 'screen-start';
+
+function showScreen(toId) {
+  const current = document.getElementById(currentScreenId);
+  const next    = document.getElementById(toId);
+  if (!next || currentScreenId === toId) return;
+
+  current.classList.add('exit');
+  current.classList.remove('active');
+
+  setTimeout(() => {
+    current.classList.remove('exit');
+    next.classList.add('active');
+    currentScreenId = toId;
+    next.scrollTop  = 0;
+  }, 380);
+}
+
+/* ──────────────────────────────────────────────────────────
+   7. ДОПОМІЖНІ ФУНКЦІЇ
+────────────────────────────────────────────────────────── */
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function showLoading(visible) {
+  document.getElementById('loading-overlay').classList.toggle('hidden', !visible);
+}
+
+function haptic(type = 'light') {
+  try { window.Telegram?.WebApp?.HapticFeedback?.impactOccurred(type); } catch (_) {}
+}
+
+/* ──────────────────────────────────────────────────────────
+   8. ЕКРАН 1 → СТАРТ
+────────────────────────────────────────────────────────── */
+document.getElementById('btn-start').addEventListener('click', () => {
+  haptic('medium');
+  showScreen('screen-question');
+});
+
+/* ──────────────────────────────────────────────────────────
+   9. ЕКРАН 2 → ВВЕДЕННЯ ПИТАННЯ
+────────────────────────────────────────────────────────── */
+const questionInput = document.getElementById('user-question');
+const charCount     = document.getElementById('char-count');
+
+questionInput.addEventListener('input', () => {
+  charCount.textContent = questionInput.value.length;
+});
+
+document.getElementById('btn-back-question').addEventListener('click', () => {
+  showScreen('screen-start');
+});
+
+document.getElementById('btn-reveal').addEventListener('click', () => {
+  const q = questionInput.value.trim();
+  if (!q) {
+    questionInput.style.animation = 'none';
+    questionInput.offsetHeight;
+    questionInput.style.animation = 'shake 0.4s ease';
+    questionInput.focus();
+    return;
+  }
+  haptic('medium');
+  userQuestion = q;
+
+  // Показуємо екран вибору з колодою (не з картами)
+  showScreen('screen-selection');
+  buildDeckView();
+});
+
+(function addShakeKeyframe() {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes shake {
+      0%,100%{transform:translateX(0)}
+      20%{transform:translateX(-8px)}
+      40%{transform:translateX(8px)}
+      60%{transform:translateX(-6px)}
+      80%{transform:translateX(6px)}
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+/* ──────────────────────────────────────────────────────────
+   10. ЕКРАН 3 → ВИБІР КАРТ
+────────────────────────────────────────────────────────── */
+
+/**
+ * Крок 1: показуємо колоду (стопку) — користувач натискає на неї
+ */
+function buildDeckView() {
+  selectedCards = [];
+  flipCount     = 0;
+  updateCounter(0);
+  document.getElementById('btn-read').classList.add('hidden');
+
+  const spread = document.getElementById('card-spread');
+  spread.innerHTML = '';
+
+  // Підказка над колодою
+  const selTop = document.querySelector('.selection-top');
+  selTop.querySelector('.selection-title').textContent = 'Торкнись колоди';
+  selTop.querySelector('.selection-hint').textContent  = 'Сконцентруйся на своєму питанні і натисни на колоду';
+  document.getElementById('cards-chosen').textContent  = '0';
+
+  // Обгортка для стопки карт
+  const deckWrap = document.createElement('div');
+  deckWrap.className = 'deck-wrap';
+  deckWrap.setAttribute('role', 'button');
+  deckWrap.setAttribute('aria-label', 'Натисни, щоб розкрити карти');
+
+  // Будуємо «стопку» з кількох задніх карт
+  for (let i = 4; i >= 0; i--) {
+    const layer = document.createElement('div');
+    layer.className = 'deck-card-layer';
+    layer.style.cssText = `
+      position: absolute;
+      bottom: ${i * 3}px;
+      left: ${i * 1}px;
+      right: ${-i * 1}px;
+    `;
+    layer.innerHTML = `
+      <div class="tarot-card" style="width:100%;height:100%">
+        <div class="card-face card-back" style="border-radius:10px">
+          <div class="card-back-inner">
+            <span class="card-back-symbol">✦</span>
+            <span class="card-back-star">☽ ✦ ☾</span>
+            <span class="card-back-symbol" style="font-size:0.6em;opacity:0.5">✦</span>
+          </div>
+        </div>
+      </div>
+    `;
+    deckWrap.appendChild(layer);
+  }
+
+  // Підпис під колодою
+  const deckLabel = document.createElement('p');
+  deckLabel.className = 'deck-label';
+  deckLabel.textContent = '78 карт · Натисни, щоб відкрити';
+
+  const deckContainer = document.createElement('div');
+  deckContainer.className = 'deck-container';
+  deckContainer.appendChild(deckWrap);
+  deckContainer.appendChild(deckLabel);
+
+  spread.appendChild(deckContainer);
+
+  // Анімація появи
+  deckContainer.style.opacity   = '0';
+  deckContainer.style.transform = 'scale(0.85) translateY(30px)';
+  deckContainer.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    deckContainer.style.opacity   = '1';
+    deckContainer.style.transform = 'scale(1) translateY(0)';
+  }));
+
+  // Клік на колоду → вибір 12 карт і показ розкладу
+  deckWrap.addEventListener('click', () => {
+    haptic('medium');
+    animateDeckExplosion(deckContainer);
+  });
+}
+
+/**
+ * Анімація "вибуху" колоди і перехід до розкладу
+ */
+function animateDeckExplosion(deckContainer) {
+  deckContainer.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+  deckContainer.style.opacity    = '0';
+  deckContainer.style.transform  = 'scale(1.15) translateY(-20px)';
+
+  setTimeout(() => {
+    buildCardSpread();
+  }, 350);
+}
+
+/**
+ * Крок 2: вибираємо 12 випадкових карт із 78 і показуємо розклад
+ */
+function buildCardSpread() {
+  // Оновлюємо підказки
+  const selTop = document.querySelector('.selection-top');
+  selTop.querySelector('.selection-title').textContent = 'Обери три карти';
+  selTop.querySelector('.selection-hint').textContent  = 'Довірся інтуїції — нехай рука веде тебе';
+
+  // Перемішуємо всю колоду та беремо 12 унікальних карт
+  shuffledDeck = shuffle([...TAROT_DECK]).slice(0, TOTAL_SPREAD_CARDS);
+
+  const spread = document.getElementById('card-spread');
+  spread.innerHTML = '';
+
+  shuffledDeck.forEach((card, index) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'tarot-card-wrap';
+    wrap.setAttribute('role', 'listitem');
+    wrap.setAttribute('aria-label', `Карта Таро рубашкою вгору ${index + 1}`);
+    wrap.dataset.index = index;
+
+    wrap.innerHTML = `
+      <div class="tarot-card" id="card-${index}">
+        <div class="card-face card-back">
+          <div class="card-back-inner">
+            <span class="card-back-symbol">✦</span>
+            <span class="card-back-star">☽ ✦ ☾</span>
+            <span class="card-back-symbol" style="font-size:0.6em;opacity:0.5">✦</span>
+          </div>
+        </div>
+        <div class="card-face card-front" aria-hidden="true">
+          <div class="card-img-wrap">
+            <div class="card-placeholder-art">
+              <span class="card-placeholder-symbol">${card.symbol}</span>
+              <span class="card-placeholder-num">${card.number}</span>
+            </div>
+          </div>
+          <div class="card-label">
+            <span class="card-label-text">${card.name}</span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Анімація «падіння» карт із колоди
+    wrap.style.opacity    = '0';
+    wrap.style.transform  = 'translateY(-40px) scale(0.8) rotate(-5deg)';
+    wrap.style.transition = `opacity 0.45s ${index * 0.06}s ease, transform 0.45s ${index * 0.06}s cubic-bezier(0.34, 1.56, 0.64, 1)`;
+
+    wrap.addEventListener('click', () => onCardClick(wrap, card, index));
+    spread.appendChild(wrap);
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      wrap.style.opacity   = '1';
+      wrap.style.transform = 'translateY(0) scale(1) rotate(0deg)';
+    }));
+  });
+}
+
+function onCardClick(wrap, card, index) {
+  if (wrap.classList.contains('is-flipped')) return;
+  if (flipCount >= CARDS_TO_PICK) return;
+
+  haptic('light');
+  flipCount++;
+  wrap.classList.add('is-flipped');
+
+  const cardEl = document.getElementById(`card-${index}`);
+  cardEl.classList.add('flipped', 'selected-glow');
+
+  const positionLabels = ['Минуле', 'Теперішнє', 'Майбутнє'];
+  selectedCards.push({ ...card, positionLabel: positionLabels[flipCount - 1] });
+
+  updateCounter(flipCount);
+
+  const countEl = document.getElementById('cards-chosen');
+  countEl.style.transform = 'scale(1.5)';
+  setTimeout(() => { countEl.style.transform = 'scale(1)'; }, 200);
+
+  if (flipCount === CARDS_TO_PICK) {
+    setTimeout(() => {
+      document.getElementById('btn-read').classList.remove('hidden');
+    }, 300);
   }
 }
 
-/* ─── Scrollbar ──────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: rgba(200,150,60,0.3);
-  border-radius: 2px;
+function updateCounter(n) {
+  document.getElementById('cards-chosen').textContent = n;
 }
 
-/* ─── Selection color ────────────────────────────────── */
-::selection {
-  background: rgba(124,58,237,0.4);
-  color: var(--gold-100);
+document.getElementById('btn-back-selection').addEventListener('click', () => {
+  showScreen('screen-question');
+});
+
+document.getElementById('btn-read').addEventListener('click', async () => {
+  if (selectedCards.length < CARDS_TO_PICK) return;
+  haptic('heavy');
+  showLoading(true);
+  buildResultScreen();
+
+  setTimeout(() => {
+    showLoading(false);
+    showScreen('screen-result');
+    setTimeout(() => getAIInterpretation(userQuestion, selectedCards), 600);
+  }, 900);
+});
+
+/* ──────────────────────────────────────────────────────────
+   11. ЕКРАН 4 → РЕЗУЛЬТАТИ
+────────────────────────────────────────────────────────── */
+function buildResultScreen() {
+  const truncated = userQuestion.length > 80
+    ? userQuestion.slice(0, 80) + '…'
+    : userQuestion;
+  document.getElementById('result-question-display').textContent = `«${truncated}»`;
+
+  const resultCardsEl = document.getElementById('result-cards');
+  resultCardsEl.innerHTML = '';
+
+  selectedCards.forEach((card, i) => {
+    const item = document.createElement('div');
+    item.className = 'result-card-item';
+    item.innerHTML = `
+      <div class="result-card-img">
+        <div class="card-placeholder-art">
+          <span class="result-card-symbol">${card.symbol}</span>
+          <span class="result-card-num">${card.number}</span>
+        </div>
+      </div>
+      <span class="result-card-position">${card.positionLabel}</span>
+      <span class="result-card-name">${card.name}</span>
+      <span class="result-card-meaning">${card.meaning}</span>
+    `;
+    resultCardsEl.appendChild(item);
+    setTimeout(() => item.classList.add('revealed'), i * 250 + 200);
+  });
+
+  // Мигаючі крапки поки AI думає
+  document.getElementById('interpretation-text').innerHTML = `
+    <div class="ai-thinking">
+      <span class="ai-dot"></span>
+      <span class="ai-dot"></span>
+      <span class="ai-dot"></span>
+    </div>
+  `;
 }
 
-/* ════════════════════════════════════════════════════════
-   DECK VIEW — колода карт (новий крок перед розкладом)
-════════════════════════════════════════════════════════ */
+/* ──────────────────────────────────────────────────────────
+   12. AI ІНТЕРПРЕТАЦІЯ (Railway → Claude)
+────────────────────────────────────────────────────────── */
+async function getAIInterpretation(question, cards) {
+  const interpEl = document.getElementById('interpretation-text');
 
-/* Контейнер: центрує стопку та підпис */
-.deck-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  width: 100%;
-  padding: 20px 0 40px;
+  try {
+    const response = await fetch(`${BACKEND_URL}/interpret`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question, cards }),
+    });
+
+    if (!response.ok) throw new Error(`Помилка сервера: ${response.status}`);
+
+    const data = await response.json();
+    if (!data.interpretation) throw new Error('Порожня відповідь від сервера');
+
+    // Очищаємо крапки, запускаємо друкарську машинку
+    interpEl.innerHTML    = '';
+    interpEl.style.opacity = '1';
+    await typewriterEffect(interpEl, data.interpretation);
+
+    // Мигаючий курсор на 2 секунди
+    const cursor = document.createElement('span');
+    cursor.className = 'ai-cursor';
+    interpEl.appendChild(cursor);
+    setTimeout(() => cursor.remove(), 2000);
+
+  } catch (err) {
+    console.error('AI Error:', err);
+    showFallbackInterpretation(interpEl, question, cards);
+  }
 }
 
-/* Обгортка стопки карт */
-.deck-wrap {
-  position: relative;
-  width: clamp(100px, 28vw, 140px);
-  height: clamp(160px, 44vw, 220px);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform 0.2s ease, filter 0.2s ease;
-  filter: drop-shadow(0 8px 24px rgba(200,150,60,0.35));
+// Ефект друкарської машинки — символ за символом (18мс)
+function typewriterEffect(el, text) {
+  return new Promise(resolve => {
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i >= text.length) { clearInterval(interval); resolve(); return; }
+      const char = text[i];
+      if (char === '\n') {
+        el.appendChild(document.createElement('br'));
+      } else {
+        el.appendChild(document.createTextNode(char));
+      }
+      i++;
+    }, 18);
+  });
 }
 
-.deck-wrap:hover,
-.deck-wrap:active {
-  transform: scale(1.05) translateY(-6px);
-  filter: drop-shadow(0 16px 40px rgba(200,150,60,0.6));
+// Резервна інтерпретація якщо Railway недоступний
+function showFallbackInterpretation(el, question, cards) {
+  const [past, present, future] = cards;
+  const openings = [
+    `Зірки вислухали твоє запитання про "${question}" і відповіли крізь три карти.`,
+    `Завіса між світами розкрилась заради твого питання: "${question}".`,
+    `Всесвіт почув "${question}" — і ось що відкрилось у картах.`,
+  ];
+  const text = [
+    openings[Math.floor(Math.random() * openings.length)],
+    '',
+    `Енергія «${past.name}» у минулому заклала основу — ${past.meaning.toLowerCase()}. ${past.interpretation}`,
+    '',
+    `Зараз «${present.name}» говорить тобі про ${present.meaning.toLowerCase()}. ${present.interpretation}`,
+    '',
+    `А попереду тебе веде «${future.name}» — ${future.meaning.toLowerCase()}. ${future.interpretation}`,
+    '',
+    'Довіряй цьому шляху. Карти лише дзеркало — справжня мудрість вже є всередині тебе.',
+  ].join('\n');
+
+  el.innerHTML = '';
+  el.style.opacity    = '0';
+  el.style.transform  = 'translateY(10px)';
+  el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+
+  requestAnimationFrame(() => requestAnimationFrame(async () => {
+    el.style.opacity   = '1';
+    el.style.transform = 'translateY(0)';
+    await typewriterEffect(el, text);
+  }));
 }
 
-/* Кожен шар стопки */
-.deck-card-layer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  overflow: hidden;
-}
+/* ──────────────────────────────────────────────────────────
+   13. КНОПКА "НОВИЙ РОЗКЛАД"
+────────────────────────────────────────────────────────── */
+document.getElementById('btn-new-reading').addEventListener('click', () => {
+  haptic('medium');
+  userQuestion          = '';
+  selectedCards         = [];
+  flipCount             = 0;
+  questionInput.value   = '';
+  charCount.textContent = '0';
+  showScreen('screen-start');
+});
 
-/* Пульсуюча підсвітка навколо колоди */
-.deck-wrap::after {
-  content: '';
-  position: absolute;
-  inset: -8px;
-  border-radius: 14px;
-  background: radial-gradient(ellipse at center, rgba(200,150,60,0.2) 0%, transparent 70%);
-  animation: deckPulse 2.4s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes deckPulse {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50%       { opacity: 1;   transform: scale(1.06); }
-}
-
-/* Підпис під колодою */
-.deck-label {
-  font-family: var(--font-heading);
-  font-size: clamp(0.75rem, 3vw, 0.9rem);
-  color: var(--gold-300);
-  letter-spacing: 0.1em;
-  text-align: center;
-  opacity: 0.8;
-  text-transform: uppercase;
-}
+/* ──────────────────────────────────────────────────────────
+   14. ЗАПУСК
+────────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  initTelegram();
+});

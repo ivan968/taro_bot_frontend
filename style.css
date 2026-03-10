@@ -1008,3 +1008,71 @@ body {
   background: rgba(124,58,237,0.4);
   color: var(--gold-100);
 }
+
+/* ════════════════════════════════════════════════════════
+   DECK VIEW — колода карт (новий крок перед розкладом)
+════════════════════════════════════════════════════════ */
+
+/* Контейнер: центрує стопку та підпис */
+.deck-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  padding: 20px 0 40px;
+}
+
+/* Обгортка стопки карт */
+.deck-wrap {
+  position: relative;
+  width: clamp(100px, 28vw, 140px);
+  height: clamp(160px, 44vw, 220px);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  filter: drop-shadow(0 8px 24px rgba(200,150,60,0.35));
+}
+
+.deck-wrap:hover,
+.deck-wrap:active {
+  transform: scale(1.05) translateY(-6px);
+  filter: drop-shadow(0 16px 40px rgba(200,150,60,0.6));
+}
+
+/* Кожен шар стопки */
+.deck-card-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Пульсуюча підсвітка навколо колоди */
+.deck-wrap::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 14px;
+  background: radial-gradient(ellipse at center, rgba(200,150,60,0.2) 0%, transparent 70%);
+  animation: deckPulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes deckPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.06); }
+}
+
+/* Підпис під колодою */
+.deck-label {
+  font-family: var(--font-heading);
+  font-size: clamp(0.75rem, 3vw, 0.9rem);
+  color: var(--gold-300);
+  letter-spacing: 0.1em;
+  text-align: center;
+  opacity: 0.8;
+  text-transform: uppercase;
+}
